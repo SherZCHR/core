@@ -86,6 +86,14 @@ class TestPFSenseDHCPStaticModule(TestPFSenseModule):
         )
         self.do_module_test(obj, command=command)
 
+    def test_dhcp_static_create_display(self):
+        """ test create with netif display name """
+        obj = dict(name='test_entry', macaddr='ab:ab:ab:ab:ab:ac', ipaddr='10.0.0.101', netif='pub')
+        command = (
+            "create dhcp_static 'test_entry', macaddr='ab:ab:ab:ab:ab:ac', ipaddr='10.0.0.101'"
+        )
+        self.do_module_test(obj, command=command)
+
     def test_dhcp_static_create_wrong_subnet(self):
         """ test create with IP address in the wrong subnet """
         obj = dict(name='test_entry', macaddr='ab:ab:ab:ab:ab:ab', ipaddr='1.2.3.4', netif='opt1')
@@ -95,6 +103,11 @@ class TestPFSenseDHCPStaticModule(TestPFSenseModule):
         """ test create with no netif """
         obj = dict(name='test_entry', macaddr='ab:ab:ab:ab:ab:ab', ipaddr='1.2.3.4')
         self.do_module_test(obj, failed=True, msg='Multiple DHCP servers enabled and no netif specified')
+
+    def test_dhcp_static_create_ifgroup(self):
+        """ test create with interface group """
+        obj = dict(name='test_entry', macaddr='ab:ab:ab:ab:ab:ab', ipaddr='1.2.3.4', netif='IFGROUP1')
+        self.do_module_test(obj, failed=True, msg='DHCP cannot be configured for interface groups')
 
     def test_dhcp_static_create_invalid_macaddr(self):
         """ test create with invalid macaddr """

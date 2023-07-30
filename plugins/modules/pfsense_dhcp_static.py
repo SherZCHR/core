@@ -223,10 +223,15 @@ class PFSenseDHCPStaticModule(PFSenseModuleBase):
             self.module.fail_json(msg='A valid MAC address must be specified.')
 
         if params['netif'] is not None:
-            self.pfsense.parse_interface(params['netif'])
+            if self.pfsense.is_interface_group(netif):
+                self.module.fail_json(msg='DHCP cannot be configured for interface groups')
+            else:
+                netif = self.pfsense.parse_interface(params['netif'])
+        else:
+            netif = None
 
         # find staticmaps and determine interface
-        self._find_staticmaps(params['netif'])
+        self._find_staticmaps(netif)
 
         if params['ipaddr'] is not None:
             addr = ip_address(u'{0}'.format(params['ipaddr']))
