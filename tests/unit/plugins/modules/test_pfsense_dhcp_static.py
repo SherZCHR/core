@@ -24,6 +24,9 @@ class TestPFSenseDHCPStaticModule(TestPFSenseModule):
         super(TestPFSenseDHCPStaticModule, self).__init__(*args, **kwargs)
         self.config_file = 'pfsense_dhcp_static_config.xml'
         self.pfmodule = PFSenseDHCPStaticModule
+
+    def setUp(self):
+        super(TestPFSenseDHCPStaticModule, self).setUp()
         self.pfsense = PFSenseModule(None)
 
     def check_target_elt(self, obj, target_elt, target_idx=-1):
