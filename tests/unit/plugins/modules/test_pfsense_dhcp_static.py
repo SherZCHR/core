@@ -12,7 +12,6 @@ if sys.version_info < (2, 7):
 
 from ansible_collections.pfsensible.core.plugins.modules import pfsense_dhcp_static
 from ansible_collections.pfsensible.core.plugins.modules.pfsense_dhcp_static import PFSenseDHCPStaticModule
-from ansible_collections.pfsensible.core.plugins.modules.pfsense import parse_interface
 from .pfsense_module import TestPFSenseModule
 
 
