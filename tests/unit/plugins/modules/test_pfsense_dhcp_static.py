@@ -12,6 +12,7 @@ if sys.version_info < (2, 7):
 
 from ansible_collections.pfsensible.core.plugins.modules import pfsense_dhcp_static
 from ansible_collections.pfsensible.core.plugins.modules.pfsense_dhcp_static import PFSenseDHCPStaticModule
+from ansible_collections.pfsensible.core.plugins.module_utils.pfsense import PFSenseModule
 from .pfsense_module import TestPFSenseModule
 
 
@@ -23,6 +24,7 @@ class TestPFSenseDHCPStaticModule(TestPFSenseModule):
         super(TestPFSenseDHCPStaticModule, self).__init__(*args, **kwargs)
         self.config_file = 'pfsense_dhcp_static_config.xml'
         self.pfmodule = PFSenseDHCPStaticModule
+        self.pfsense = PFSenseModule(None)
 
     def check_target_elt(self, obj, target_elt, target_idx=-1):
         """ test the xml definition """
@@ -48,7 +50,7 @@ class TestPFSenseDHCPStaticModule(TestPFSenseModule):
         """ get the generated xml definition """
         dhcpd_elt = self.assert_find_xml_elt(self.xml_result, 'dhcpd')
         for e in dhcpd_elt:
-            if 'netif' not in obj or e.tag == self.pfmodule.pfsense.parse_interface(obj['netif']):
+            if 'netif' not in obj or e.tag == self.pfsense.parse_interface(obj['netif']):
                 if e.find('enable') is not None:
                     root_elt = e
                     break
